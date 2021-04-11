@@ -2,14 +2,26 @@
   "name": "geojson-looker",
   "version": "0.1.0",
   "description": "GeoJSON data vis for Looker",
-  "main": "geojson-looker-container.js",
+  "main": "geojson-looker-container.tsx",
   "repository": "https://github.com/ContrastingSounds/geojson-looker",
   "author": "Jon Walls",
   "license": "MIT",
   "devDependencies": {
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
     "css-loader": "^5.2.1",
     "style-loader": "^2.0.0",
+    "ts-loader": "^8.1.0",
+    "typescript": "^4.2.4",
     "webpack": "^5.31.2",
     "webpack-cli": "^4.6.0"
+  },
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack  --watch --progress"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }
