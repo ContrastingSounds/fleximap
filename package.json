@@ -5,5 +5,11 @@
   "main": "geojson-looker-container.js",
   "repository": "https://github.com/ContrastingSounds/geojson-looker",
   "author": "Jon Walls",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "css-loader": "^5.2.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.31.2",
+    "webpack-cli": "^4.6.0"
+  }
 }

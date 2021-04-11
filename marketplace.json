@@ -1,0 +1,19 @@
+{
+  "label": "GeoJSON",
+  "category_label": "Plug-ins",
+  "branding": {
+    "image_uri": "https://svgsilh.com/png/576797-3f51b5.png",
+    "tagline": "GeoJSON overlays for dynamic maps"
+  },
+    "constants": {
+        "VIS_LABEL": {
+            "label": "GeoJSON",
+            "description": "GeoJSON overlays for dynamic maps"
+        },
+        "VIS_ID": {
+            "label": "geojson-looker",
+            "description": "GeoJSON overlays for dynamic maps",
+            "value_constraint": "visualization"
+        }
+    }
+}
