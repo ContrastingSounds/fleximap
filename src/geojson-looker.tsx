@@ -6,6 +6,20 @@ import './geojson-looker.css'
 import { LatLngExpression } from 'leaflet'
 
 
+import L from 'leaflet'
+
+// import icon from 'leaflet/dist/images/marker-icon.png'
+// import iconShadow from 'leaflet/dist/images/marker-shadow.png'
+
+let DefaultIcon = L.icon({
+    iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png', // icon,
+    shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png'// iconShadow
+})
+
+L.Marker.prototype.options.icon = DefaultIcon
+
+// Marker issues: https://github.com/PaulLeCam/react-leaflet/issues/453#issuecomment-731732137
+
 const map_options = {
     'standard': {
         'tiles_url': 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -72,14 +86,14 @@ const Geojson = (props) => {
         scrollWheelZoom={false}
         style={{ width: '100%', height: '900px'}}>
         <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution={map_options[props.mapStyle].metadata.attribute}
+          url={map_options[props.mapStyle].tiles_url}
         />
-        {/* <Marker position={position}>
+        <Marker position={position}>
           <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
-        </Marker> */}
+        </Marker>
       </MapContainer>
     </>
   )
