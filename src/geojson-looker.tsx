@@ -65,13 +65,13 @@ const vis: VisualizationDefinition = {
     console.log('config:', config)
     console.log('queryResponse:', queryResponse)
 
-    let map_element = document.getElementById('leafletMap');
+    let map_element = document.getElementById('leafletMap')
     if (map_element) {
         map_element.parentNode!.removeChild(map_element);
     }
-    map_element = element.appendChild(document.createElement("div"));
-    map_element.id = "leafletMap";
-    map_element.setAttribute("style","height:" + element.clientHeight + "px");
+    map_element = element.appendChild(document.createElement("div"))
+    map_element.id = "leafletMap"
+    map_element.setAttribute("style","height:" + element.clientHeight + "px")
 
     var map = L.map('leafletMap').setView([51.505, -0.09], 13)
     
