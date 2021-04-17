@@ -1,3 +1,6 @@
+// https://storage.googleapis.com/jeff-308116-media/countries.geojson
+// https://storage.googleapis.com/jeff-308116-media/us-states.geojson
+
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import './geojson-looker.css'
@@ -14,6 +17,15 @@ import { map_options, getDimensions, getMeasures, getConfigOptions, getDataAndRa
 // Global values provided via the API
 declare var looker: Looker
 
+
+const addGeoJson = async (map) => {
+  const response = await fetch('https://storage.googleapis.com/jeff-308116-media/countries.geojson');
+  const data = await response.json()
+  let layer = L.geoJSON(data).addTo(map)
+  map.fitBounds(layer.getBounds())
+}
+
+// addGeoJson()
 
 const vis: VisualizationDefinition = {
   options: {}, // default_options,
@@ -70,13 +82,15 @@ const vis: VisualizationDefinition = {
     map_element.id = "leafletMap"
     map_element.setAttribute("style","height:" + element.clientHeight + "px")
 
-    var map = L.map('leafletMap').setView([51.505, -0.09], 13)
+    var map = L.map('leafletMap').setView([40, -74], 4)
     
     if (config.mapStyle) {
       L.tileLayer(
         map_options[config.mapStyle].tiles_url, 
         map_options[config.mapStyle].metadata
-      ).addTo(map);
+      ).addTo(map)
+
+      addGeoJson(map)
     }
 
   }
