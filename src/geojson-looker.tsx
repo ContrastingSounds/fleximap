@@ -17,11 +17,22 @@ import { map_options, getDimensions, getMeasures, getConfigOptions, getDataAndRa
 // Global values provided via the API
 declare var looker: Looker
 
+const styleRegion = (feature: any): any => {
+  return {
+    fillColor: 'lightblue',
+    fillOpacity: 0.7,
+
+    color: 'grey',
+    weight: 2,
+    opacity: 0,
+    dashArray: '3',
+  }
+}
 
 const addGeoJson = async (layerConfig: GeoJsonLayer, map: any) => {
   const response = await fetch(layerConfig.value) // fetch('https://storage.googleapis.com/jeff-308116-media/countries.geojson');
   const data = await response.json()
-  let layer = L.geoJSON(data).addTo(map)
+  let layer = L.geoJSON(data, { style: layerConfig.style }).addTo(map)
   map.fitBounds(layer.getBounds())
 }
 
@@ -84,7 +95,7 @@ const vis: VisualizationDefinition = {
     map_element.id = "leafletMap"
     map_element.setAttribute("style","height:" + element.clientHeight + "px")
 
-    var map = L.map('leafletMap').setView([40, -74], 4)
+    var map = L.map('leafletMap')
     
     if (config.mapStyle) {
       L.tileLayer(
@@ -94,6 +105,7 @@ const vis: VisualizationDefinition = {
 
       let layerConfig: GeoJsonLayer = {
         type: 'region',
+        style: styleRegion,
         value: geoVisModel.data[0][config.regionLayer].value
       }
       addGeoJson(layerConfig, map)

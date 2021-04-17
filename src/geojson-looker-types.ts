@@ -19,6 +19,7 @@ export interface GeoVisConfig {
 }
 
 export interface GeoJsonLayer {
-  type: 'region' | 'point'
+  type: 'region' | 'point',
+  style: (any) => any,
   value: string
 }
