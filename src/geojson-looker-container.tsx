@@ -27,7 +27,21 @@ const default_options: VisOptions = {
       {"Historic (UK Only)": "historic"},
     ],
     default: "standard",
+    order: 1
   },
+  layerType: {
+    section: "Map",
+    type: 'string',
+    label: 'Layer Type',
+    display: 'select',
+    values: [
+      {'Map file': 'map_file'},
+      {'GeoJSON field': 'geojson_field'},
+      {'Location Points': 'location_points'},
+    ],
+    default: 'map_file',
+    order: 2
+  }
 }
 
 const vis: VisualizationDefinition = {
@@ -41,10 +55,15 @@ const vis: VisualizationDefinition = {
     // ERROR HANDLING
     this.clearErrors()
 
+    console.log('data:', data)
+    console.log('config:', config)
+    console.log('queryResponse:', queryResponse)
+
     console.log('Ready to render vis')
     this.chart = ReactDOM.render(
       <Geojson
         mapStyle={config.mapStyle}
+        layerType={config.layerType}
         width={element.clientWidth}
         height={element.clientHeight}
       />,

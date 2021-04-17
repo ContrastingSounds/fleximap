@@ -3,13 +3,10 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 import 'leaflet/dist/leaflet.css'
 import './geojson-looker.css'
-import { LatLngExpression } from 'leaflet'
+import { LatLngTuple } from 'leaflet'
 
 
 import L from 'leaflet'
-
-// import icon from 'leaflet/dist/images/marker-icon.png'
-// import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 
 let DefaultIcon = L.icon({
     iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png', // icon,
@@ -76,7 +73,7 @@ const map_options = {
 
 const Geojson = (props) => {
   console.log('Geojson() props', props)
-  const position: LatLngExpression = [51.505, -0.09]
+  const position: LatLngTuple = [51.505, -0.09]
   return (
     <>
       {console.log('Geojson Component')}
@@ -84,10 +81,14 @@ const Geojson = (props) => {
         center={position} 
         zoom={13} 
         scrollWheelZoom={false}
-        style={{ width: '100%', height: '900px'}}>
+        style={{ width: '100%', height: props.height}}>
         <TileLayer
-          attribution={map_options[props.mapStyle].metadata.attribute}
           url={map_options[props.mapStyle].tiles_url}
+          attribution={map_options[props.mapStyle].metadata.attribute}
+          // ext={map_options[props.mapStyle].metadata.ext}
+          // subdomains={map_options[props.mapStyle].metadata.subdomains}
+          // minZoom={map_options[props.mapStyle].metadata.minZoom}
+          // maxZoom={map_options[props.mapStyle].metadata.maxZoom}
         />
         <Marker position={position}>
           <Popup>
