@@ -74,12 +74,12 @@ const addGeoJson = async (layerConfig: GeoJsonLayer, map: any, model: GeoVisMode
         feature.properties.lookerLinks = undefined
         feature.properties.lookerLabel = undefined
       }
-      
     }
   })
 
   let layer = L.geoJSON(data, { style: styleRegion }).addTo(map)
-  map.fitBounds(layer.getBounds())
+  console.log('getBounds()', layer.getBounds())
+  map.fitBounds(layer.getBounds(), { padding: [0, 0] })
 }
 
 // addGeoJson()
@@ -141,9 +141,13 @@ const vis: VisualizationDefinition = {
     }
     map_element = element.appendChild(document.createElement("div"))
     map_element.id = "leafletMap"
-    map_element.setAttribute("style","height:" + element.clientHeight + "px")
+    map_element.setAttribute("style", "height: 100%")
 
-    var map = L.map('leafletMap',{attributionControl: false})
+    let mapOptions = {
+      attributionControl: false,
+      zoomSnap: 0.1,
+    }
+    let map = L.map('leafletMap', mapOptions)
     
     if (config.mapStyle) {
       L.tileLayer(

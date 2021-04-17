@@ -2,7 +2,7 @@
   "name": "geojson-looker",
   "version": "0.1.0",
   "description": "GeoJSON data vis for Looker",
-  "main": "geojson-looker.tsx",
+  "main": "geojson-looker.ts",
   "repository": "https://github.com/ContrastingSounds/geojson-looker",
   "author": "Jon Walls",
   "license": "MIT",
