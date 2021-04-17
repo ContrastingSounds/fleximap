@@ -108,7 +108,7 @@ export const map_options = {
  * @param queryResponse 
  * @param visModel 
  */
-const getDimensions = (queryResponse: VisQueryResponse, visModel) => {
+const getDimensions = (queryResponse: VisQueryResponse, visModel: GeoVisModel) => {
   queryResponse.fields.dimension_like.forEach(dimension => {
     const field_updates = {
       label: dimension.label_short || dimension.label,
@@ -157,7 +157,7 @@ const getMeasures = (queryResponse: VisQueryResponse, visModel: GeoVisModel) => 
   })
 }
 
-const getConfigOptions = function(model) {
+const getConfigOptions = function(model: GeoVisModel) {
   const { dimensions, measures } = model
 
   let visOptions: VisOptions = {
@@ -203,34 +203,13 @@ const getConfigOptions = function(model) {
     }
   }
 
-  // sizeBy
-  var sizeByOptions: Array<VisConfigValue> = [];
+  var colorByOptions: Array<VisConfigValue> = []
+  var sizeByOptions: Array<VisConfigValue> = []
   measures.forEach(measure => {
-      var option: VisConfigValue = {};
-      option[measure.label] = measure.name;
-      sizeByOptions.push(option);
-  })
-
-  visOptions["sizeBy"] = {
-      section: "Visualization",
-      type: "string",
-      label: "Size By",
-      display: "select",
-      values: sizeByOptions,
-      default: "0",
-      order: 300,
-  }
-
-  // colorByOptions include:
-  // - by dimension
-  // - by pivot key (which are also dimensions)
-  // - by pivot series (one color per column)
-  var colorByOptions: Array<VisConfigValue> = [];
-
-  dimensions.forEach(dimension => {
-      var option: VisConfigValue = {};
-      option[dimension.label] = dimension.name;
+      var option: VisConfigValue = {}
+      option[measure.label] = measure.name
       colorByOptions.push(option)
+      sizeByOptions.push(option)
   })
 
   visOptions["colorBy"] = {
@@ -239,9 +218,48 @@ const getConfigOptions = function(model) {
     label: "Color By",
     display: "select",
     values: colorByOptions,
-    default: "0",
-    order: 100,
+    default: model.measures[0].name,
+    order: 10,
   } 
+
+  visOptions["sizeBy"] = {
+      section: "Visualization",
+      type: "string",
+      label: "Size By",
+      display: "select",
+      values: sizeByOptions,
+      default: model.measures[0].name,
+      order: 20,
+  }
+
+  var regionLayerOptions: Array<VisConfigValue> = []
+  var pointLayerOptions: Array<VisConfigValue> = []
+  dimensions.forEach(dimension => {
+      var option: VisConfigValue = {}
+      option[dimension.label] = dimension.name
+      regionLayerOptions.push(option)
+      pointLayerOptions.push(option)
+  })
+
+  visOptions["regionLayer"] = {
+    section: "Visualization",
+    type: "string",
+    label: "Region Layer",
+    display: "select",
+    values: regionLayerOptions,
+    default: model.dimensions[0].name,
+    order: 30,
+  } 
+  
+  visOptions["pointLayer"] = {
+      section: "Visualization",
+      type: "string",
+      label: "Point Layer",
+      display: "select",
+      values: pointLayerOptions,
+      default: model.dimensions[0].name,
+      order: 40,
+  }
 
   console.log('visOptions', visOptions)
   return visOptions

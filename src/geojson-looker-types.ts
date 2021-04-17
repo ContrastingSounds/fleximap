@@ -10,8 +10,15 @@ export interface GeoVisModel {
 export interface GeoVisConfig {
   mapStyle: string,
   layerType: string,
+  regionLayer: string,
+  pointLayer: string,
   colorBy: string,
   groupBy: string,
   sizeBy: string,
   scale: number
+}
+
+export interface GeoJsonLayer {
+  type: 'region' | 'point'
+  value: string
 }

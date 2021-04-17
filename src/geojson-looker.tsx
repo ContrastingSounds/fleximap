@@ -10,7 +10,7 @@ import {
   VisualizationDefinition,
 } from './types'
 
-import { GeoVisModel, GeoVisConfig } from './geojson-looker-types'
+import { GeoVisModel, GeoVisConfig, GeoJsonLayer } from './geojson-looker-types'
 
 import { map_options, getDimensions, getMeasures, getConfigOptions, getDataAndRanges } from './geojson-looker-model'
 
@@ -18,8 +18,8 @@ import { map_options, getDimensions, getMeasures, getConfigOptions, getDataAndRa
 declare var looker: Looker
 
 
-const addGeoJson = async (map) => {
-  const response = await fetch('https://storage.googleapis.com/jeff-308116-media/countries.geojson');
+const addGeoJson = async (layerConfig: GeoJsonLayer, map: any) => {
+  const response = await fetch(layerConfig.value) // fetch('https://storage.googleapis.com/jeff-308116-media/countries.geojson');
   const data = await response.json()
   let layer = L.geoJSON(data).addTo(map)
   map.fitBounds(layer.getBounds())
@@ -63,6 +63,8 @@ const vis: VisualizationDefinition = {
     var visConfig: GeoVisConfig = {
       mapStyle: config.mapStyle,
       layerType: config.layerType,
+      regionLayer: config.regionLayer,
+      pointLayer: config.pointLayer,
       colorBy: config.colorBy,
       groupBy: config.groupBy,
       sizeBy: config.sizeBy,
@@ -90,7 +92,11 @@ const vis: VisualizationDefinition = {
         map_options[config.mapStyle].metadata
       ).addTo(map)
 
-      addGeoJson(map)
+      let layerConfig: GeoJsonLayer = {
+        type: 'region',
+        value: geoVisModel.data[0][config.regionLayer].value
+      }
+      addGeoJson(layerConfig, map)
     }
 
   }
