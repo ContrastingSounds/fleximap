@@ -1,103 +1,85 @@
-import React from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-
+import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import './geojson-looker.css'
-import { LatLngTuple } from 'leaflet'
 
+import {
+  Looker,
+  VisualizationDefinition,
+  VisOptions
+} from './types'
 
-import L from 'leaflet'
+import { map_options } from './geojson-looker-model'
 
-let DefaultIcon = L.icon({
-    iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png', // icon,
-    shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png'// iconShadow
-})
+// Global values provided via the API
+declare var looker: Looker
 
-L.Marker.prototype.options.icon = DefaultIcon
-
-// Marker issues: https://github.com/PaulLeCam/react-leaflet/issues/453#issuecomment-731732137
-
-export const map_options = {
-    'standard': {
-        'tiles_url': 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        'metadata': {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-        }
-    },
-    'satellite': {
-        'tiles_url': 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        'metadata': {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-        }
-    },
-    'topographic': {
-        'tiles_url': 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-        'metadata': {
-            maxZoom: 17,
-            attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-        }
-    },
-    'watercolour': {
-        'tiles_url': 'https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}',
-        'metadata': {
-            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            subdomains: 'abcd',
-            minZoom: 1,
-            maxZoom: 16,
-            ext: 'jpg'
-        }
-    },
-    'toner_lite': {
-        'tiles_url': 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}',
-        'metadata': {
-            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            subdomains: 'abcd',
-            minZoom: 0,
-            maxZoom: 20,
-            ext: 'png'
-        },
-    },
-    'historic': {
-        'tiles_url': 'https://nls-{s}.tileserver.com/nls/{z}/{x}/{y}.jpg',
-        'metadata': {
-            attribution: '<a href="http://geo.nls.uk/maps/">National Library of Scotland Historic Maps</a>',
-            bounds: [[49.6, -12], [61.7, 3]],
-            minZoom: 1,
-            maxZoom: 18,
-            subdomains: '0123'
-        }
-    },
+const default_options: VisOptions = {
+  mapStyle: {
+    section: "Map",
+    type: "string",
+    label: "Map Style",
+    display: "select",
+    values: [
+      {"Standard": "standard"},
+      {"Satellite": "satellite"},
+      {"Topographic": "topographic"},
+      {"Watercolour": "watercolour"},
+      {"Toner Lite": "toner_lite"},
+      {"Historic (UK Only)": "historic"},
+    ],
+    default: "standard",
+    order: 1
+  },
+  layerType: {
+    section: "Map",
+    type: 'string',
+    label: 'Layer Type',
+    display: 'select',
+    values: [
+      {'Map file': 'map_file'},
+      {'GeoJSON field': 'geojson_field'},
+      {'Location Points': 'location_points'},
+    ],
+    default: 'map_file',
+    order: 2
+  }
 }
 
+const vis: VisualizationDefinition = {
+  options: default_options,
 
+  create: function(element, config) {
+    this.container = element.appendChild(document.createElement("div"))
+    this.container.id = "leafletMap"
 
-const Geojson = (props) => {
-  console.log('Geojson() props', props)
-  const position: LatLngTuple = [51.505, -0.09]
-  return (
-    <>
-      {console.log('Geojson Component')}
-      <MapContainer 
-        center={position} 
-        zoom={13} 
-        scrollWheelZoom={false}
-        style={{ width: '100%', height: props.height}}>
-        <TileLayer
-          url={map_options[props.mapStyle].tiles_url}
-          attribution={map_options[props.mapStyle].metadata.attribute}
-          // ext={map_options[props.mapStyle].metadata.ext}
-          // subdomains={map_options[props.mapStyle].metadata.subdomains}
-          // minZoom={map_options[props.mapStyle].metadata.minZoom}
-          // maxZoom={map_options[props.mapStyle].metadata.maxZoom}
-        />
-        <Marker position={position}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
-      </MapContainer>
-    </>
-  )
+    this.tooltip = element.appendChild(document.createElement("div"))
+    this.tooltip.id = "tooltip"
+    this.tooltip.className = "tooltip"
+  },
+
+  updateAsync: function(data, element, config, queryResponse, details, done) {
+    // ERROR HANDLING
+    this.clearErrors()
+
+    console.log('data:', data)
+    console.log('config:', config)
+    console.log('queryResponse:', queryResponse)
+
+    let map_element = document.getElementById('leafletMap');
+    if (map_element) {
+        map_element.parentNode!.removeChild(map_element);
+    }
+    map_element = element.appendChild(document.createElement("div"));
+    map_element.id = "leafletMap";
+    map_element.setAttribute("style","height:" + element.clientHeight + "px");
+
+    var map = L.map('leafletMap').setView([51.505, -0.09], 13)
+    
+    L.tileLayer(
+        map_options[config.mapStyle].tiles_url, 
+        map_options[config.mapStyle].metadata
+    ).addTo(map);
+  }
 }
 
-export default Geojson
+looker.plugins.visualizations.add(vis)

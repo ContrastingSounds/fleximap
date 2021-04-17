@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/geojson-looker-container.tsx',
+  entry: './src/geojson-looker.tsx',
   output: {
     filename: 'geojson-looker.js',
     path: path.resolve(__dirname),
