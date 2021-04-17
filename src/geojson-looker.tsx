@@ -14,11 +14,12 @@ import {
 } from './types'
 
 import { GeoVisModel, GeoVisConfig, GeoJsonLayer } from './geojson-looker-types'
-
 import { map_options, getDimensions, getMeasures, getConfigOptions, getDataAndRanges } from './geojson-looker-model'
 
 // Global values provided via the API
 declare var looker: Looker
+
+const removeUndefinedFeatures = true
 
 const addGeoJson = async (layerConfig: GeoJsonLayer, map: any, model: GeoVisModel, config: GeoVisConfig) => {
   const response = await fetch(layerConfig.value)
@@ -55,7 +56,7 @@ const addGeoJson = async (layerConfig: GeoJsonLayer, map: any, model: GeoVisMode
     }
   }
 
-  data.features.forEach((feature: any): void => {
+  data.features.forEach((feature: any, idx: number): void => {
     let dimension = config.regionKey
     let property = model.data[0][config.regionProperty].value
     let currentKey = feature.properties[property]
@@ -66,9 +67,14 @@ const addGeoJson = async (layerConfig: GeoJsonLayer, map: any, model: GeoVisMode
       feature.properties.lookerLinks = dataRow[config.colorBy].links
       feature.properties.lookerLabel = 'Looker Label'
     } else {
-      feature.properties.lookerValue = undefined
-      feature.properties.lookerLinks = undefined
-      feature.properties.lookerLabel = undefined
+      if (removeUndefinedFeatures) {
+        data.features.splice(idx, 1)
+      } else {
+        feature.properties.lookerValue = undefined
+        feature.properties.lookerLinks = undefined
+        feature.properties.lookerLabel = undefined
+      }
+      
     }
   })
 
