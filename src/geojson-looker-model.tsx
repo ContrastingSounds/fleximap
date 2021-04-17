@@ -8,37 +8,48 @@
 import { VisConfig, VisConfigValue, VisData, VisOptions, VisQueryResponse } from './types'
 import { GeoVisModel } from './geojson-looker-types'
 
-export const default_options: VisOptions = {
-  mapStyle: {
-    section: "Map",
-    type: "string",
-    label: "Map Style",
-    display: "select",
-    values: [
-      {"Standard": "standard"},
-      {"Satellite": "satellite"},
-      {"Topographic": "topographic"},
-      {"Watercolour": "watercolour"},
-      {"Toner Lite": "toner_lite"},
-      {"Historic (UK Only)": "historic"},
-    ],
-    default: "standard",
-    order: 1
-  },
-  layerType: {
-    section: "Map",
-    type: 'string',
-    label: 'Layer Type',
-    display: 'select',
-    values: [
-      {'Map file': 'map_file'},
-      {'GeoJSON field': 'geojson_field'},
-      {'Location Points': 'location_points'},
-    ],
-    default: 'map_file',
-    order: 2
-  }
-}
+// export const default_options: VisOptions = {
+//   mapStyle: {
+//     section: "Map",
+//     type: "string",
+//     label: "Map Style",
+//     display: "select",
+//     values: [
+//       {"Standard": "standard"},
+//       {"Satellite": "satellite"},
+//       {"Topographic": "topographic"},
+//       {"Watercolour": "watercolour"},
+//       {"Toner Lite": "toner_lite"},
+//       {"Historic (UK Only)": "historic"},
+//     ],
+//     default: "standard",
+//     order: 1
+//   },
+//   layerType: {
+//     section: "Map",
+//     type: 'string',
+//     label: 'Layer Type',
+//     display: 'select',
+//     values: [
+//       {'Map file': 'map_file'},
+//       {'GeoJSON field': 'geojson_field'},
+//       {'Location Points': 'location_points'},
+//     ],
+//     default: 'map_file',
+//     order: 2
+//   },
+//   scale: {
+//     section: ' Visualization',
+//     type: 'number',
+//     display: 'range',
+//     label: 'Scale Size By',
+//     default: 1.0,
+//     min: 0.2,
+//     max: 2.0,
+//     step: 0.2,
+//     order: 100000,
+//   }
+// }
 
 export const map_options = {
   'standard': {
@@ -92,7 +103,11 @@ export const map_options = {
   },
 }
 
-
+/**
+ * Ensures consistent use of label field
+ * @param queryResponse 
+ * @param visModel 
+ */
 const getDimensions = (queryResponse: VisQueryResponse, visModel) => {
   queryResponse.fields.dimension_like.forEach(dimension => {
     const field_updates = {
@@ -113,7 +128,6 @@ const getMeasures = (queryResponse: VisQueryResponse, visModel: GeoVisModel) => 
       view: measure.view_label || '',
       is_table_calculation: typeof measure.is_table_calculation !== 'undefined',
       is_row_total: false,
-      is_pivoted: queryResponse.pivots.length > 0,
       is_super: false,
     }
     
@@ -132,7 +146,6 @@ const getMeasures = (queryResponse: VisQueryResponse, visModel: GeoVisModel) => 
         view: measure.view_label || '',
         is_table_calculation: false, // table calcs aren't included in row totals
         is_row_total: true,
-        is_pivoted: false,
         is_super: false
       }) 
   
@@ -145,11 +158,40 @@ const getMeasures = (queryResponse: VisQueryResponse, visModel: GeoVisModel) => 
 }
 
 const getConfigOptions = function(model) {
-  const { pivot_fields, dimensions, measures } = model
+  const { dimensions, measures } = model
 
-  var visOptions = {
+  let visOptions: VisOptions = {
+    mapStyle: {
+      section: "Map",
+      type: "string",
+      label: "Map Style",
+      display: "select",
+      values: [
+        {"Standard": "standard"},
+        {"Satellite": "satellite"},
+        {"Topographic": "topographic"},
+        {"Watercolour": "watercolour"},
+        {"Toner Lite": "toner_lite"},
+        {"Historic (UK Only)": "historic"},
+      ],
+      default: "standard",
+      order: 1
+    },
+    layerType: {
+      section: "Map",
+      type: 'string',
+      label: 'Layer Type',
+      display: 'select',
+      values: [
+        {'Map file': 'map_file'},
+        {'GeoJSON field': 'geojson_field'},
+        {'Location Points': 'location_points'},
+      ],
+      default: 'map_file',
+      order: 2
+    },
     scale: {
-      section: ' Visualization',
+      section: 'Visualization',
       type: 'number',
       display: 'range',
       label: 'Scale Size By',
@@ -170,7 +212,7 @@ const getConfigOptions = function(model) {
   })
 
   visOptions["sizeBy"] = {
-      section: " Visualization",
+      section: "Visualization",
       type: "string",
       label: "Size By",
       display: "select",
@@ -192,7 +234,7 @@ const getConfigOptions = function(model) {
   })
 
   visOptions["colorBy"] = {
-    section: " Visualization",
+    section: "Visualization",
     type: "string",
     label: "Color By",
     display: "select",
@@ -201,6 +243,7 @@ const getConfigOptions = function(model) {
     order: 100,
   } 
 
+  console.log('visOptions', visOptions)
   return visOptions
 }
 

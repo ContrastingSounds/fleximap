@@ -7,14 +7,16 @@ import {
   VisualizationDefinition,
 } from './types'
 
-import { default_options, map_options, getDimensions, getMeasures, getConfigOptions, getDataAndRanges } from './geojson-looker-model'
+import { GeoVisModel, GeoVisConfig } from './geojson-looker-types'
+
+import { map_options, getDimensions, getMeasures, getConfigOptions, getDataAndRanges } from './geojson-looker-model'
 
 // Global values provided via the API
 declare var looker: Looker
 
 
 const vis: VisualizationDefinition = {
-  options: default_options,
+  options: {}, // default_options,
 
   create: function(element, config) {
     this.container = element.appendChild(document.createElement("div"))
@@ -33,8 +35,33 @@ const vis: VisualizationDefinition = {
     console.log('config:', config)
     console.log('queryResponse:', queryResponse)
 
+    // MODEL
+    let geoVisModel: GeoVisModel = {
+      dimensions: [],
+      measures: [],
+      data: [],
+      ranges: {}
+    }
 
+    getDimensions(queryResponse, geoVisModel)
+    getMeasures(queryResponse, geoVisModel)
+    getConfigOptions(geoVisModel)
+    
+    // CONFIG
+    var visConfig: GeoVisConfig = {
+      mapStyle: config.mapStyle,
+      layerType: config.layerType,
+      colorBy: config.colorBy,
+      groupBy: config.groupBy,
+      sizeBy: config.sizeBy,
+      scale: config.scale
+    }
 
+    this.trigger('registerOptions', getConfigOptions(geoVisModel))
+    getDataAndRanges(data, visConfig, geoVisModel)
+    console.log('geoVisModel:', geoVisModel)
+
+    // MAP
     let map_element = document.getElementById('leafletMap')
     if (map_element) {
         map_element.parentNode!.removeChild(map_element);
@@ -45,10 +72,13 @@ const vis: VisualizationDefinition = {
 
     var map = L.map('leafletMap').setView([51.505, -0.09], 13)
     
-    L.tileLayer(
+    if (config.mapStyle) {
+      L.tileLayer(
         map_options[config.mapStyle].tiles_url, 
         map_options[config.mapStyle].metadata
-    ).addTo(map);
+      ).addTo(map);
+    }
+
   }
 }
 
