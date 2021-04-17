@@ -5,45 +5,13 @@ import './geojson-looker.css'
 import {
   Looker,
   VisualizationDefinition,
-  VisOptions
 } from './types'
 
-import { map_options } from './geojson-looker-model'
+import { default_options, map_options, getDimensions, getMeasures, getConfigOptions, getDataAndRanges } from './geojson-looker-model'
 
 // Global values provided via the API
 declare var looker: Looker
 
-const default_options: VisOptions = {
-  mapStyle: {
-    section: "Map",
-    type: "string",
-    label: "Map Style",
-    display: "select",
-    values: [
-      {"Standard": "standard"},
-      {"Satellite": "satellite"},
-      {"Topographic": "topographic"},
-      {"Watercolour": "watercolour"},
-      {"Toner Lite": "toner_lite"},
-      {"Historic (UK Only)": "historic"},
-    ],
-    default: "standard",
-    order: 1
-  },
-  layerType: {
-    section: "Map",
-    type: 'string',
-    label: 'Layer Type',
-    display: 'select',
-    values: [
-      {'Map file': 'map_file'},
-      {'GeoJSON field': 'geojson_field'},
-      {'Location Points': 'location_points'},
-    ],
-    default: 'map_file',
-    order: 2
-  }
-}
 
 const vis: VisualizationDefinition = {
   options: default_options,
@@ -64,6 +32,8 @@ const vis: VisualizationDefinition = {
     console.log('data:', data)
     console.log('config:', config)
     console.log('queryResponse:', queryResponse)
+
+
 
     let map_element = document.getElementById('leafletMap')
     if (map_element) {

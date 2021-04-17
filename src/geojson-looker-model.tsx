@@ -5,8 +5,40 @@
  * provided by the Looker plugin framework (or Looker API if using API calls)
  */
 
-import { VisConfig, VisConfigValue, VisData, VisQueryResponse } from './types'
+import { VisConfig, VisConfigValue, VisData, VisOptions, VisQueryResponse } from './types'
 import { GeoVisModel } from './geojson-looker-types'
+
+export const default_options: VisOptions = {
+  mapStyle: {
+    section: "Map",
+    type: "string",
+    label: "Map Style",
+    display: "select",
+    values: [
+      {"Standard": "standard"},
+      {"Satellite": "satellite"},
+      {"Topographic": "topographic"},
+      {"Watercolour": "watercolour"},
+      {"Toner Lite": "toner_lite"},
+      {"Historic (UK Only)": "historic"},
+    ],
+    default: "standard",
+    order: 1
+  },
+  layerType: {
+    section: "Map",
+    type: 'string',
+    label: 'Layer Type',
+    display: 'select',
+    values: [
+      {'Map file': 'map_file'},
+      {'GeoJSON field': 'geojson_field'},
+      {'Location Points': 'location_points'},
+    ],
+    default: 'map_file',
+    order: 2
+  }
+}
 
 export const map_options = {
   'standard': {
