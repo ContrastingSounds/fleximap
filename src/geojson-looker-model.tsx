@@ -8,49 +8,6 @@
 import { VisConfig, VisConfigValue, VisData, VisOptions, VisQueryResponse } from './types'
 import { GeoVisModel } from './geojson-looker-types'
 
-// export const default_options: VisOptions = {
-//   mapStyle: {
-//     section: "Map",
-//     type: "string",
-//     label: "Map Style",
-//     display: "select",
-//     values: [
-//       {"Standard": "standard"},
-//       {"Satellite": "satellite"},
-//       {"Topographic": "topographic"},
-//       {"Watercolour": "watercolour"},
-//       {"Toner Lite": "toner_lite"},
-//       {"Historic (UK Only)": "historic"},
-//     ],
-//     default: "standard",
-//     order: 1
-//   },
-//   layerType: {
-//     section: "Map",
-//     type: 'string',
-//     label: 'Layer Type',
-//     display: 'select',
-//     values: [
-//       {'Map file': 'map_file'},
-//       {'GeoJSON field': 'geojson_field'},
-//       {'Location Points': 'location_points'},
-//     ],
-//     default: 'map_file',
-//     order: 2
-//   },
-//   scale: {
-//     section: ' Visualization',
-//     type: 'number',
-//     display: 'range',
-//     label: 'Scale Size By',
-//     default: 1.0,
-//     min: 0.2,
-//     max: 2.0,
-//     step: 0.2,
-//     order: 100000,
-//   }
-// }
-
 export const map_options = {
   'standard': {
       'tiles_url': 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -233,11 +190,15 @@ const getConfigOptions = function(model: GeoVisModel) {
   }
 
   var regionLayerOptions: Array<VisConfigValue> = []
+  var regionKeyOptions: Array<VisConfigValue> = []
+  var regionPropertyOptions: Array<VisConfigValue> = []
   var pointLayerOptions: Array<VisConfigValue> = []
   dimensions.forEach(dimension => {
       var option: VisConfigValue = {}
       option[dimension.label] = dimension.name
       regionLayerOptions.push(option)
+      regionKeyOptions.push(option)
+      regionPropertyOptions.push(option)
       pointLayerOptions.push(option)
   })
 
@@ -250,6 +211,28 @@ const getConfigOptions = function(model: GeoVisModel) {
     default: model.dimensions[0].name,
     order: 30,
   } 
+
+  visOptions["regionKey"] = {
+    section: "Visualization",
+    type: "string",
+    label: "Region Key",
+    display: "select",
+    display_size: 'half',
+    values: regionKeyOptions,
+    default: model.dimensions[0].name,
+    order: 40,
+  } 
+
+  visOptions["regionProperty"] = {
+    section: "Visualization",
+    type: "string",
+    label: "Region Property",
+    display: "select",
+    display_size: 'half',
+    values: regionPropertyOptions,
+    default: model.dimensions[0].name,
+    order: 50,
+  } 
   
   visOptions["pointLayer"] = {
       section: "Visualization",
@@ -258,7 +241,7 @@ const getConfigOptions = function(model: GeoVisModel) {
       display: "select",
       values: pointLayerOptions,
       default: model.dimensions[0].name,
-      order: 40,
+      order: 60,
   }
 
   console.log('visOptions', visOptions)

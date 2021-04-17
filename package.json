@@ -22,6 +22,10 @@
     "watch": "webpack  --watch --progress"
   },
   "dependencies": {
+    "@types/d3-scale": "^3.2.2",
+    "@types/d3-scale-chromatic": "^2.0.0",
+    "d3-scale": "^3.3.0",
+    "d3-scale-chromatic": "^2.0.0",
     "file-loader": "^6.2.0",
     "leaflet": "^1.7.1",
     "react": "^17.0.2",

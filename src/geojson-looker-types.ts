@@ -11,6 +11,8 @@ export interface GeoVisConfig {
   mapStyle: string,
   layerType: string,
   regionLayer: string,
+  regionKey: string,
+  regionProperty: string,
   pointLayer: string,
   colorBy: string,
   groupBy: string,
@@ -20,6 +22,5 @@ export interface GeoVisConfig {
 
 export interface GeoJsonLayer {
   type: 'region' | 'point',
-  style: (any) => any,
   value: string
 }
