@@ -78,7 +78,7 @@ const getConfigOptions = function(model) {
   }
 
   // sizeBy
-  var sizeByOptions = [];
+  var sizeByOptions: Array<VisConfigValue> = [];
   measures.forEach(measure => {
       var option: VisConfigValue = {};
       option[measure.label] = measure.name;
@@ -99,7 +99,7 @@ const getConfigOptions = function(model) {
   // - by dimension
   // - by pivot key (which are also dimensions)
   // - by pivot series (one color per column)
-  var colorByOptions = [];
+  var colorByOptions: Array<VisConfigValue> = [];
 
   dimensions.forEach(dimension => {
       var option: VisConfigValue = {};
@@ -144,7 +144,7 @@ const getDataAndRanges = (data: VisData, visConfig: VisConfig, visModel: GeoVisM
 
   data.forEach(row => {
     // Set unique identifier per observation
-    row.observationId = visModel.dimensions.map(dimension => row[dimension.name].value).join('|')
+    // row.observationId = visModel.dimensions.map(dimension => row[dimension.name].value).join('|')
 
     // Update ranges for dimensions
     visModel.dimensions.forEach(dimension => {

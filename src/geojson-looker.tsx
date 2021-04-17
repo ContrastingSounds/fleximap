@@ -17,7 +17,7 @@ L.Marker.prototype.options.icon = DefaultIcon
 
 // Marker issues: https://github.com/PaulLeCam/react-leaflet/issues/453#issuecomment-731732137
 
-const map_options = {
+export const map_options = {
     'standard': {
         'tiles_url': 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         'metadata': {

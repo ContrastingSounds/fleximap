@@ -1,5 +1,4 @@
-import React from "react"
-import ReactDOM from "react-dom"
+let L = require('leaflet')
 
 import {
   Looker,
@@ -7,7 +6,7 @@ import {
   VisOptions
 } from './types'
 
-import Geojson from './geojson-looker'
+import { map_options } from './geojson-looker'
 
 // Global values provided via the API
 declare var looker: Looker
@@ -48,7 +47,12 @@ const vis: VisualizationDefinition = {
   options: default_options,
 
   create: function(element, config) {
-    this.chart = ReactDOM.render(<div />, element)
+    this.container = element.appendChild(document.createElement("div"))
+    this.container.id = "leafletMap"
+
+    this.tooltip = element.appendChild(document.createElement("div"))
+    this.tooltip.id = "tooltip"
+    this.tooltip.className = "tooltip"
   },
 
   updateAsync: function(data, element, config, queryResponse, details, done) {
@@ -59,16 +63,20 @@ const vis: VisualizationDefinition = {
     console.log('config:', config)
     console.log('queryResponse:', queryResponse)
 
-    console.log('Ready to render vis')
-    this.chart = ReactDOM.render(
-      <Geojson
-        mapStyle={config.mapStyle}
-        layerType={config.layerType}
-        width={element.clientWidth}
-        height={element.clientHeight}
-      />,
-      element
-    )
+    let map_element = document.getElementById('leafletMap');
+    if (map_element) {
+        map_element.parentNode!.removeChild(map_element);
+    }
+    map_element = element.appendChild(document.createElement("div"));
+    map_element.id = "leafletMap";
+    map_element.setAttribute("style","height:" + element.clientHeight + "px");
+
+    var map = L.map('leafletMap').setView([51.505, -0.09], 13)
+    
+    L.tileLayer(
+        map_options[config.mapStyle].tiles_url, 
+        map_options[config.mapStyle].metadata
+    ).addTo(map);
   }
 }
 
