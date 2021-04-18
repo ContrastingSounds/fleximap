@@ -100,14 +100,14 @@ const addGeoJson = async (layerConfig: GeoJsonLayer, map: any, model: GeoVisMode
   }
 
   data.features.forEach((feature: any, idx: number): void => {
-    let dimension = config.regionKey
-    let property = model.data[0][config.regionProperty].value
+    let dimension = config.regionDataKey
+    let property = model.data[0][config.regionMapKey]
     let currentKey = feature.properties[property]
-    let dataRow = model.data.find(row => row[dimension].value === currentKey)
+    let dataRow = model.data.find(row => row[dimension] === currentKey)
 
     if (typeof dataRow !== 'undefined') {
-      feature.properties.lookerValue = dataRow[config.colorBy].value
-      feature.properties.lookerLinks = dataRow[config.colorBy].links
+      feature.properties.lookerValue = dataRow[config.colorBy]
+      // feature.properties.lookerLinks = dataRow[config.colorBy].links
       feature.properties.lookerLabel = 'Looker Label'
     } else {
       if (removeUndefinedFeatures) {
@@ -126,19 +126,11 @@ const addGeoJson = async (layerConfig: GeoJsonLayer, map: any, model: GeoVisMode
 }
 
 const buildLeafletMap = (element: any, config: GeoVisConfig, model: GeoVisModel): void => {
-  let map_element = document.getElementById('geojsonMap')
-  if (map_element) {
-      map_element.parentNode!.removeChild(map_element);
-  }
-  map_element = element.appendChild(document.createElement("div"))
-  map_element!.id = "geojsonMap"
-  map_element!.setAttribute("style", "height: 100%")
-
   let mapOptions = {
     attributionControl: false,
     zoomSnap: 0.1,
   }
-  let map = L.map('geojsonMap', mapOptions)
+  let map = L.map(element, mapOptions)
 
   if (config.mapStyle) {
     L.tileLayer(
@@ -148,7 +140,7 @@ const buildLeafletMap = (element: any, config: GeoVisConfig, model: GeoVisModel)
 
     let layerConfig: GeoJsonLayer = {
       type: 'region',
-      value: model.data[0][config.regionLayer].value
+      value: model.data[0][config.regionLayer]
     }
     addGeoJson(layerConfig, map, model, config)
   }

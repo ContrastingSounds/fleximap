@@ -1,36 +1,68 @@
 import vegaEmbed from 'vega-embed'
+import { isLookup } from 'vega-lite/build/src/transform'
 
-let vegaLiteSpecification: any = {
+let vegaLiteSpec: any = {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 800,
-  "height": 500,
-  "projection": {
-    "type": "albersUsa"
-  },
-  "layer": [
+  // "layer": [],
+}
+
+const buildVegaLiteMap = function(element, config, model) {
+  vegaLiteSpec.data = {
+    "url": model.data[0][config.regionLayer],
+    "format": {"property": "features"},
+  }
+  vegaLiteSpec.projection = {
+    'type': model.data[0][config.projection]
+  }
+  vegaLiteSpec.datasets = {
+    'looker': model.data
+  }
+
+  vegaLiteSpec.layer = [
     {
-      "data": {
-        "url": "https://storage.googleapis.com/jeff-308116-media/us-states.geojson",
-      },
       "mark": {
         "type": "geoshape",
-        "fill": "lightgray",
+        "fill": "lightgrey",
         "stroke": "white"
+      }
+    },
+    {
+      "mark": {
+        "type": "geoshape",
+        "stroke": "white"
+      },
+      "transform": [
+        {
+          'lookup': 'properties.' + model.data[0][config.regionMapKey], 
+          'from': {
+            'data': { 'name': 'looker' },
+            'key': config.regionDataKey,
+            'fields': [config.colorBy],
+          }
+        }
+      ],
+      "encoding": {
+        "color": {
+          "field": config.colorBy,
+          "type": "quantitative",
+        },
+        "tooltip": [
+          {"field": "properties.name", "type": "nominal", "title": "Name"},
+          {"field": "properties.region", "type": "nominal", "title": "Region"},
+          {"field": config.colorBy, "type": "quantitative", "title": config.colorBy}
+        ]
       }
     }
   ]
-}
 
-const buildVegaLiteMap = function(elem, config, model) {
-  // vegaLiteSpecification.data = { "values": model.data} 
-  vegaLiteSpecification.height = elem.clientHeight
-  vegaLiteSpecification.width = elem.clientWidth
+  vegaLiteSpec.height = element.clientHeight
+  vegaLiteSpec.width = element.clientWidth
     
   let vegaConfig: any = {
     'actions': false
   }
-
-  vegaEmbed(elem, vegaLiteSpecification, vegaConfig).catch(console.warn)
+  console.log('vegaLiteSpec', vegaLiteSpec)
+  vegaEmbed(element, vegaLiteSpec, vegaConfig).catch(console.warn)
 }
 
 export default buildVegaLiteMap

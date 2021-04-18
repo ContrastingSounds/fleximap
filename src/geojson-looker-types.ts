@@ -3,7 +3,7 @@ import { VisData } from './types'
 export interface GeoVisModel {
   dimensions: Array<any>,
   measures: Array<any>,
-  data: VisData,
+  data: Array<any>,
   ranges: { [index: string]: any }
 }
 
@@ -11,10 +11,13 @@ export interface GeoVisConfig {
   visType: string,
   mapStyle: string,
   layerType: string,
+  projection: string,
+
   regionLayer: string,
-  regionKey: string,
-  regionProperty: string,
+  regionDataKey: string,
+  regionMapKey: string,
   pointLayer: string,
+
   colorBy: string,
   groupBy: string,
   sizeBy: string,

@@ -49,10 +49,13 @@ const vis: VisualizationDefinition = {
       visType: config.visType,
       mapStyle: config.mapStyle,
       layerType: config.layerType,
+      projection: config.projection,
+
       regionLayer: config.regionLayer,
-      regionKey: config.regionKey,
-      regionProperty: config.regionProperty,
+      regionDataKey: config.regionDataKey,
+      regionMapKey: config.regionMapKey,
       pointLayer: config.pointLayer,
+
       colorBy: config.colorBy,
       groupBy: config.groupBy,
       sizeBy: config.sizeBy,
@@ -64,13 +67,22 @@ const vis: VisualizationDefinition = {
     console.log('geoVisModel:', geoVisModel)
 
     // MAP
+    let map_element = document.getElementById('geojsonMap')
+    if (map_element) {
+        map_element.parentNode!.removeChild(map_element);
+    }
+
+    map_element = element.appendChild(document.createElement("div"))
+    map_element!.id = "geojsonMap"
+    map_element!.setAttribute("style", "height: 100%")
+
     switch (config.visType) {
       case 'leaflet':
-        buildLeafletMap(element, visConfig, geoVisModel)
+        buildLeafletMap(map_element, visConfig, geoVisModel)
         break
       
       case 'vegaLite':
-        buildVegaLiteMap(element, visConfig, geoVisModel)
+        buildVegaLiteMap(map_element, visConfig, geoVisModel)
         break
     }
     

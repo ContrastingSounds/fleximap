@@ -8,6 +8,8 @@
 import { VisConfig, VisConfigValue, VisData, VisOptions, VisQueryResponse } from './types'
 import { GeoVisModel } from './geojson-looker-types'
 
+const sanitize = (field: string): string => field.replace(/\./g, '__')
+
 /**
  * Ensures consistent use of label field
  * @param queryResponse 
@@ -22,7 +24,7 @@ const getDimensions = (queryResponse: VisQueryResponse, visModel: GeoVisModel) =
     
     dimension = {...dimension, ...field_updates}
     visModel.dimensions.push(dimension)
-    visModel.ranges[dimension.name] = { set: [] }
+    visModel.ranges[sanitize(dimension.name)] = { set: [] }
   })
 }
 
@@ -38,7 +40,7 @@ const getMeasures = (queryResponse: VisQueryResponse, visModel: GeoVisModel) => 
     
     measure = {...measure, ...field_updates}
     visModel.measures.push(measure) 
-    visModel.ranges[measure.name] = {
+    visModel.ranges[sanitize(measure.name)] = {
       min: Number.POSITIVE_INFINITY,
       max: Number.NEGATIVE_INFINITY,
     }
@@ -54,7 +56,7 @@ const getMeasures = (queryResponse: VisQueryResponse, visModel: GeoVisModel) => 
         is_super: false
       }) 
   
-      visModel.ranges['$$$_row_total_$$$.' + measure.name] = {
+      visModel.ranges[sanitize('$$$_row_total_$$$.' + measure.name)] = {
         min: Number.POSITIVE_INFINITY,
         max: Number.NEGATIVE_INFINITY,
       }     
@@ -72,8 +74,8 @@ const getConfigOptions = function(model: GeoVisModel) {
       label: "Vis Type",
       display: "select",
       values: [
-        {"Mapping Service": "leaflet"},
-        {"Shapes Only": "vegaLite"},
+        {"Map Tiles (Leaflet)": "leaflet"},
+        {"Shapes (Vega Lite)": "vegaLite"},
       ],
       default: "leaflet",
       order: 0
@@ -124,7 +126,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   var sizeByOptions: Array<VisConfigValue> = []
   measures.forEach(measure => {
       var option: VisConfigValue = {}
-      option[measure.label] = measure.name
+      option[measure.label] = sanitize(measure.name)
       colorByOptions.push(option)
       sizeByOptions.push(option)
   })
@@ -135,7 +137,7 @@ const getConfigOptions = function(model: GeoVisModel) {
     label: "Color By",
     display: "select",
     values: colorByOptions,
-    default: model.measures[0].name,
+    default: sanitize(model.measures[0].name),
     order: 10,
   } 
 
@@ -145,21 +147,23 @@ const getConfigOptions = function(model: GeoVisModel) {
       label: "Size By",
       display: "select",
       values: sizeByOptions,
-      default: model.measures[0].name,
+      default: sanitize(model.measures[0].name),
       order: 20,
   }
 
   var regionLayerOptions: Array<VisConfigValue> = []
-  var regionKeyOptions: Array<VisConfigValue> = []
-  var regionPropertyOptions: Array<VisConfigValue> = []
+  var regionDataKeyOptions: Array<VisConfigValue> = []
+  var regionMapKeyOptions: Array<VisConfigValue> = []
   var pointLayerOptions: Array<VisConfigValue> = []
+  var projectionOptions: Array<VisConfigValue> = []
   dimensions.forEach(dimension => {
       var option: VisConfigValue = {}
-      option[dimension.label] = dimension.name
+      option[dimension.label] = sanitize(dimension.name)
       regionLayerOptions.push(option)
-      regionKeyOptions.push(option)
-      regionPropertyOptions.push(option)
+      regionDataKeyOptions.push(option)
+      regionMapKeyOptions.push(option)
       pointLayerOptions.push(option)
+      projectionOptions.push(option)
   })
 
   visOptions["regionLayer"] = {
@@ -168,29 +172,29 @@ const getConfigOptions = function(model: GeoVisModel) {
     label: "Region Layer",
     display: "select",
     values: regionLayerOptions,
-    default: model.dimensions[0].name,
+    default: sanitize(model.dimensions[0].name),
     order: 30,
   } 
 
-  visOptions["regionKey"] = {
+  visOptions["regionDataKey"] = {
     section: "Visualization",
     type: "string",
-    label: "Region Key",
+    label: "Data Key",
     display: "select",
     display_size: 'half',
-    values: regionKeyOptions,
-    default: model.dimensions[0].name,
+    values: regionDataKeyOptions,
+    default: sanitize(model.dimensions[0].name),
     order: 40,
   } 
 
-  visOptions["regionProperty"] = {
+  visOptions["regionMapKey"] = {
     section: "Visualization",
     type: "string",
-    label: "Region Property",
+    label: "Map Key",
     display: "select",
     display_size: 'half',
-    values: regionPropertyOptions,
-    default: model.dimensions[0].name,
+    values: regionMapKeyOptions,
+    default: sanitize(model.dimensions[0].name),
     order: 50,
   } 
   
@@ -200,9 +204,19 @@ const getConfigOptions = function(model: GeoVisModel) {
       label: "Point Layer",
       display: "select",
       values: pointLayerOptions,
-      default: model.dimensions[0].name,
+      default: sanitize(model.dimensions[0].name),
       order: 60,
   }
+
+  visOptions["projection"] = {
+    section: "Map",
+    type: "string",
+    label: "Projection",
+    display: "select",
+    values: projectionOptions,
+    default: sanitize(model.dimensions[0].name),
+    order: 60,
+}
 
   console.log('visOptions', visOptions)
   return visOptions
@@ -228,40 +242,49 @@ const getConfigOptions = function(model: GeoVisModel) {
  * 
  */
 const getDataAndRanges = (data: VisData, visConfig: VisConfig, visModel: GeoVisModel) => {
-  const sizeByField = visModel.measures.find(measure => measure.name === visConfig.sizeBy)
-
+  let jsonData: Array<any> = []
   data.forEach(row => {
     // Set unique identifier per observation
     // row.observationId = visModel.dimensions.map(dimension => row[dimension.name].value).join('|')
+    let jsonRow: any = {}
 
-    // Update ranges for dimensions
     visModel.dimensions.forEach(dimension => {
-      var current_set = visModel.ranges[dimension.name].set
+      var current_set = visModel.ranges[sanitize(dimension.name)].set
       var row_value = row[dimension.name].value
 
+      // update ranges
       if (current_set.indexOf(row_value) === -1) {
         current_set.push(row_value)
       }
+
+      // update row
+      jsonRow[sanitize(dimension.name)] = row_value
     })
 
-    // Update ranges for measures
+    
     visModel.measures.forEach(measure => {
       if (measure.is_row_total) {
         row[measure.name] = row[measure.field_name]['$$$_row_total_$$$']
       }
 
-      var current_min = visModel.ranges[measure.name].min
-      var current_max = visModel.ranges[measure.name].max
+      // Update ranges for measures
+      var current_min = visModel.ranges[sanitize(measure.name)].min
+      var current_max = visModel.ranges[sanitize(measure.name)].max
 
       var row_value = measure.is_row_total 
         ? row[measure.field_name]['$$$_row_total_$$$'].value 
         : row[measure.name].value
 
-      visModel.ranges[measure.name].min = Math.min(current_min, row_value)
-      visModel.ranges[measure.name].max = Math.max(current_max, row_value)
+      visModel.ranges[sanitize(measure.name)].min = Math.min(current_min, row_value)
+      visModel.ranges[sanitize(measure.name)].max = Math.max(current_max, row_value)
+
+      // update row
+      jsonRow[sanitize(measure.name)] = row[measure.name].value
     })
+
+    jsonData.push(jsonRow)
   })
-  visModel.data = data
+  visModel.data = jsonData
 
 }
 
