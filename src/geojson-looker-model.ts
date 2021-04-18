@@ -81,10 +81,10 @@ const getConfigOptions = function(model: GeoVisModel) {
       label: "Vis Type",
       display: "select",
       values: [
-        {"Map Tiles (Leaflet)": "leaflet"},
         {"Shapes (Vega Lite)": "vegaLite"},
+        {"Map Tiles (Leaflet)": "leaflet"},
       ],
-      default: "leaflet",
+      default: "vegaLite",
       order: 0
     },
     mapStyle: {
@@ -117,7 +117,7 @@ const getConfigOptions = function(model: GeoVisModel) {
       order: 2
     },
     colorScheme: {
-      section: "Map",
+      section: "Region",
       type: 'string',
       label: 'Color Scheme',
       display: 'select',

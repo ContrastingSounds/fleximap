@@ -37048,10 +37048,10 @@ var getConfigOptions = function (model) {
             label: "Vis Type",
             display: "select",
             values: [
-                { "Map Tiles (Leaflet)": "leaflet" },
                 { "Shapes (Vega Lite)": "vegaLite" },
+                { "Map Tiles (Leaflet)": "leaflet" },
             ],
-            default: "leaflet",
+            default: "vegaLite",
             order: 0
         },
         mapStyle: {
@@ -37084,7 +37084,7 @@ var getConfigOptions = function (model) {
             order: 2
         },
         colorScheme: {
-            section: "Map",
+            section: "Region",
             type: 'string',
             label: 'Color Scheme',
             display: 'select',
