@@ -8,6 +8,13 @@
 import { VisConfig, VisConfigValue, VisData, VisOptions, VisQueryResponse } from './types'
 import { GeoVisModel } from './geojson-looker-types'
 
+/**
+ * Simple function to remove periods from strings
+ * Main purpose is to prevent field names including periods from causing an issue
+ * 
+ * @param field string to sanitize (typically dimension or measure names)
+ * @returns 
+ */
 const sanitize = (field: string): string => field.replace(/\./g, '__')
 
 /**

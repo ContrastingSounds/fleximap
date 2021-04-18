@@ -36983,6 +36983,13 @@ var __assign = (undefined && undefined.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+/**
+ * Simple function to remove periods from strings
+ * Main purpose is to prevent field names including periods from causing an issue
+ *
+ * @param field string to sanitize (typically dimension or measure names)
+ * @returns
+ */
 var sanitize = function (field) { return field.replace(/\./g, '__'); };
 /**
  * Ensures consistent use of label field
@@ -37252,7 +37259,6 @@ __webpack_require__.r(__webpack_exports__);
 
 var vegaLiteSpec = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    // "layer": [],
 };
 var buildVegaLiteMap = function (element, config, model) {
     vegaLiteSpec.data = {
@@ -37284,7 +37290,7 @@ var buildVegaLiteMap = function (element, config, model) {
                     'from': {
                         'data': { 'name': 'looker' },
                         'key': config.regionDataKey,
-                        'fields': [config.colorBy],
+                        'fields': [config.colorBy, config.sizeBy],
                     }
                 }
             ],
@@ -37301,12 +37307,13 @@ var buildVegaLiteMap = function (element, config, model) {
             }
         }
     ];
-    vegaLiteSpec.height = element.clientHeight;
-    vegaLiteSpec.width = element.clientWidth;
     var vegaConfig = {
-        'actions': false
+        'actions': false,
     };
     console.log('vegaLiteSpec', vegaLiteSpec);
+    vegaLiteSpec.height = element.clientHeight;
+    vegaLiteSpec.width = element.clientWidth;
+    vegaLiteSpec.autosize = { "type": "fit" };
     (0,vega_embed__WEBPACK_IMPORTED_MODULE_0__.default)(element, vegaLiteSpec, vegaConfig).catch(console.warn);
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (buildVegaLiteMap);

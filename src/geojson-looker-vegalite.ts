@@ -1,9 +1,7 @@
 import vegaEmbed from 'vega-embed'
-import { isLookup } from 'vega-lite/build/src/transform'
 
 let vegaLiteSpec: any = {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  // "layer": [],
 }
 
 const buildVegaLiteMap = function(element, config, model) {
@@ -11,9 +9,11 @@ const buildVegaLiteMap = function(element, config, model) {
     "url": model.data[0][config.regionLayer],
     "format": {"property": "features"},
   }
+
   vegaLiteSpec.projection = {
     'type': model.data[0][config.projection]
   }
+
   vegaLiteSpec.datasets = {
     'looker': model.data
   }
@@ -37,7 +37,7 @@ const buildVegaLiteMap = function(element, config, model) {
           'from': {
             'data': { 'name': 'looker' },
             'key': config.regionDataKey,
-            'fields': [config.colorBy],
+            'fields': [config.colorBy, config.sizeBy],
           }
         }
       ],
@@ -54,14 +54,16 @@ const buildVegaLiteMap = function(element, config, model) {
       }
     }
   ]
+    
+  let vegaConfig: any = {
+    'actions': false,
+  }
+  console.log('vegaLiteSpec', vegaLiteSpec)
 
   vegaLiteSpec.height = element.clientHeight
   vegaLiteSpec.width = element.clientWidth
-    
-  let vegaConfig: any = {
-    'actions': false
-  }
-  console.log('vegaLiteSpec', vegaLiteSpec)
+  vegaLiteSpec.autosize = { "type": "fit" }
+
   vegaEmbed(element, vegaLiteSpec, vegaConfig).catch(console.warn)
 }
 
