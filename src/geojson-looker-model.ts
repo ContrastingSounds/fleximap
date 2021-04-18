@@ -66,6 +66,18 @@ const getConfigOptions = function(model: GeoVisModel) {
   const { dimensions, measures } = model
 
   let visOptions: VisOptions = {
+    visType: {
+      section: "Map",
+      type: "string",
+      label: "Vis Type",
+      display: "select",
+      values: [
+        {"Mapping Service": "leaflet"},
+        {"Shapes Only": "vegaLite"},
+      ],
+      default: "leaflet",
+      order: 0
+    },
     mapStyle: {
       section: "Map",
       type: "string",

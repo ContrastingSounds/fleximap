@@ -8,6 +8,7 @@ export interface GeoVisModel {
 }
 
 export interface GeoVisConfig {
+  visType: string,
   mapStyle: string,
   layerType: string,
   regionLayer: string,

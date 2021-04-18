@@ -6,6 +6,7 @@ import {
 import { GeoVisModel, GeoVisConfig } from './geojson-looker-types'
 import { getDimensions, getMeasures, getConfigOptions, getDataAndRanges } from './geojson-looker-model'
 import buildLeafletMap from './geojson-looker-leaflet'
+import buildVegaLiteMap from './geojson-looker-vegalite'
 
 // Global values provided via the API
 declare var looker: Looker
@@ -45,6 +46,7 @@ const vis: VisualizationDefinition = {
     
     // CONFIG
     var visConfig: GeoVisConfig = {
+      visType: config.visType,
       mapStyle: config.mapStyle,
       layerType: config.layerType,
       regionLayer: config.regionLayer,
@@ -62,7 +64,16 @@ const vis: VisualizationDefinition = {
     console.log('geoVisModel:', geoVisModel)
 
     // MAP
-    buildLeafletMap(element, visConfig, geoVisModel)
+    switch (config.visType) {
+      case 'leaflet':
+        buildLeafletMap(element, visConfig, geoVisModel)
+        break
+      
+      case 'vegaLite':
+        buildVegaLiteMap(element, visConfig, geoVisModel)
+        break
+    }
+    
   }
 }
 
