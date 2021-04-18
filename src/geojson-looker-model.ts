@@ -116,8 +116,22 @@ const getConfigOptions = function(model: GeoVisModel) {
       default: 'map_file',
       order: 2
     },
+    colorScheme: {
+      section: "Map",
+      type: 'string',
+      label: 'Color Scheme',
+      display: 'select',
+      values: [
+        {'Blue': 'lighttealblue'},
+        {'Green': 'bluegreen'},
+        {'Red': 'orangered'},
+        {'Grey': 'greys'}
+      ],
+      default: 'lighttealblue',
+      order: 3
+    },
     scale: {
-      section: 'Visualization',
+      section: 'Point',
       type: 'number',
       display: 'range',
       label: 'Scale Size By',
@@ -139,7 +153,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   })
 
   visOptions["colorBy"] = {
-    section: "Visualization",
+    section: "Region",
     type: "string",
     label: "Color By",
     display: "select",
@@ -149,7 +163,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   } 
 
   visOptions["sizeBy"] = {
-      section: "Visualization",
+      section: "Point",
       type: "string",
       label: "Size By",
       display: "select",
@@ -174,7 +188,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   })
 
   visOptions["regionLayer"] = {
-    section: "Visualization",
+    section: "Region",
     type: "string",
     label: "Region Layer",
     display: "select",
@@ -184,7 +198,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   } 
 
   visOptions["regionDataKey"] = {
-    section: "Visualization",
+    section: "Region",
     type: "string",
     label: "Data Key",
     display: "select",
@@ -195,7 +209,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   } 
 
   visOptions["regionMapKey"] = {
-    section: "Visualization",
+    section: "Region",
     type: "string",
     label: "Map Key",
     display: "select",
@@ -206,7 +220,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   } 
   
   visOptions["pointLayer"] = {
-      section: "Visualization",
+      section: "Point",
       type: "string",
       label: "Point Layer",
       display: "select",

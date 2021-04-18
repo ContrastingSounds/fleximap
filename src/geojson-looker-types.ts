@@ -16,6 +16,8 @@ export interface GeoVisConfig {
   regionLayer: string,
   regionDataKey: string,
   regionMapKey: string,
+  colorScheme: string,
+
   pointLayer: string,
 
   colorBy: string,

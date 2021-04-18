@@ -54,6 +54,8 @@ const vis: VisualizationDefinition = {
       regionLayer: config.regionLayer,
       regionDataKey: config.regionDataKey,
       regionMapKey: config.regionMapKey,
+      colorScheme: config.colorScheme,
+      
       pointLayer: config.pointLayer,
 
       colorBy: config.colorBy,

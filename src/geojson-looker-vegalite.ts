@@ -45,6 +45,8 @@ const buildVegaLiteMap = function(element, config, model) {
         "color": {
           "field": config.colorBy,
           "type": "quantitative",
+          // https://vega.github.io/vega/docs/schemes/#scheme-properties
+          "scale": { "scheme": config.colorScheme }
         },
         "tooltip": [
           {"field": "properties.name", "type": "nominal", "title": "Name"},

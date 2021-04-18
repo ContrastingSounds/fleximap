@@ -37083,8 +37083,22 @@ var getConfigOptions = function (model) {
             default: 'map_file',
             order: 2
         },
+        colorScheme: {
+            section: "Map",
+            type: 'string',
+            label: 'Color Scheme',
+            display: 'select',
+            values: [
+                { 'Blue': 'lighttealblue' },
+                { 'Green': 'bluegreen' },
+                { 'Red': 'orangered' },
+                { 'Grey': 'greys' }
+            ],
+            default: 'lighttealblue',
+            order: 3
+        },
         scale: {
-            section: 'Visualization',
+            section: 'Point',
             type: 'number',
             display: 'range',
             label: 'Scale Size By',
@@ -37104,7 +37118,7 @@ var getConfigOptions = function (model) {
         sizeByOptions.push(option);
     });
     visOptions["colorBy"] = {
-        section: "Visualization",
+        section: "Region",
         type: "string",
         label: "Color By",
         display: "select",
@@ -37113,7 +37127,7 @@ var getConfigOptions = function (model) {
         order: 10,
     };
     visOptions["sizeBy"] = {
-        section: "Visualization",
+        section: "Point",
         type: "string",
         label: "Size By",
         display: "select",
@@ -37136,7 +37150,7 @@ var getConfigOptions = function (model) {
         projectionOptions.push(option);
     });
     visOptions["regionLayer"] = {
-        section: "Visualization",
+        section: "Region",
         type: "string",
         label: "Region Layer",
         display: "select",
@@ -37145,7 +37159,7 @@ var getConfigOptions = function (model) {
         order: 30,
     };
     visOptions["regionDataKey"] = {
-        section: "Visualization",
+        section: "Region",
         type: "string",
         label: "Data Key",
         display: "select",
@@ -37155,7 +37169,7 @@ var getConfigOptions = function (model) {
         order: 40,
     };
     visOptions["regionMapKey"] = {
-        section: "Visualization",
+        section: "Region",
         type: "string",
         label: "Map Key",
         display: "select",
@@ -37165,7 +37179,7 @@ var getConfigOptions = function (model) {
         order: 50,
     };
     visOptions["pointLayer"] = {
-        section: "Visualization",
+        section: "Point",
         type: "string",
         label: "Point Layer",
         display: "select",
@@ -37298,6 +37312,8 @@ var buildVegaLiteMap = function (element, config, model) {
                 "color": {
                     "field": config.colorBy,
                     "type": "quantitative",
+                    // https://vega.github.io/vega/docs/schemes/#scheme-properties
+                    "scale": { "scheme": config.colorScheme }
                 },
                 "tooltip": [
                     { "field": "properties.name", "type": "nominal", "title": "Name" },
@@ -97338,6 +97354,7 @@ var vis = {
             regionLayer: config.regionLayer,
             regionDataKey: config.regionDataKey,
             regionMapKey: config.regionMapKey,
+            colorScheme: config.colorScheme,
             pointLayer: config.pointLayer,
             colorBy: config.colorBy,
             groupBy: config.groupBy,
