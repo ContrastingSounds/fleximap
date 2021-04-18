@@ -1,23 +1,28 @@
 import vegaEmbed from 'vega-embed'
 
-let vegaLiteSpec: any = {
+const baseSpec: any = {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  layer: []
+  "layer": [],
+  "autosize": { "type": "fit" }
 }
 
 const buildVegaLiteMap = function(element, config, model) {
+  let vegaLiteSpec = baseSpec
+  
   vegaLiteSpec.data = {
     "url": model.data[0][config.regionLayer],
     "format": {"property": "features"},
   }
 
   vegaLiteSpec.projection = {
-    'type': model.data[0][config.projection]
+    "type": model.data[0][config.projection]
   }
 
   vegaLiteSpec.datasets = {
-    'looker': model.data
+    "looker": model.data
   }
+
+  vegaLiteSpec.layer = []
 
   let regions = {
     "mark": {
@@ -48,7 +53,7 @@ const buildVegaLiteMap = function(element, config, model) {
         "field": config.colorBy,
         "type": "quantitative",
         // https://vega.github.io/vega/docs/schemes/#scheme-properties
-        "scale": { "scheme": config.colorScheme }
+        "scale": { "scheme":  config.colorScheme }
       },
       "tooltip": [
         {"field": "properties.name", "type": "nominal", "title": "Name"},
@@ -101,7 +106,6 @@ const buildVegaLiteMap = function(element, config, model) {
 
   vegaLiteSpec.height = element.clientHeight
   vegaLiteSpec.width = element.clientWidth
-  vegaLiteSpec.autosize = { "type": "fit" }
 
   vegaEmbed(element, vegaLiteSpec, vegaConfig).catch(console.warn)
 }

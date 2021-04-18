@@ -36755,6 +36755,159 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/geojson-looker-circlemap.ts":
+/*!*****************************************!*\
+  !*** ./src/geojson-looker-circlemap.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vega__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vega */ "./node_modules/vega/build/vega.module.js");
+/* harmony import */ var vega_embed__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vega-embed */ "./node_modules/vega-embed/build/vega-embed.module.js");
+
+
+var buildCircleMap = function (element, config, model) {
+    var vegaSpec = {
+        "$schema": "https://vega.github.io/schema/vega/v5.json",
+        "description": "Convert regions and points to circles",
+        "height": element.clientHeight,
+        "width": element.clientWidth,
+        "autosize": { "type": "fit" },
+        "data": [
+            {
+                "name": "regions",
+                "url": model.data[0][config.regionLayer],
+                "format": { "property": "features" },
+                "transform": [
+                    {
+                        "type": "formula",
+                        "expr": "geoCentroid('projection', datum)",
+                        "as": "centroid"
+                    },
+                    {
+                        "type": "formula",
+                        "expr": "800",
+                        "as": "value"
+                    },
+                ],
+            },
+            {
+                "name": "looker",
+                "values": model.data,
+                "transform": [
+                    {
+                        "type": "lookup",
+                        "from": "regions",
+                        "key": "properties." + model.data[0][config.regionMapKey],
+                        "fields": ["centroid"],
+                        "as": ["centroid"]
+                    }
+                ]
+            }
+        ],
+        "projections": [
+            {
+                "name": "projection",
+                "type": model.data[0][config.projection],
+                "scale": 1100,
+                "translate": [{ "signal": "width / 2" }, { "signal": "height / 2" }]
+            }
+        ],
+        "scales": [
+            {
+                "name": "size",
+                "domain": { "data": "regions", "field": "value" },
+                "zero": false,
+                "range": [0, 1000]
+            },
+            {
+                "name": "color",
+                "type": "linear",
+                "nice": true,
+                "domain": { "data": "regions", "field": "value" },
+                "range": "ramp"
+            }
+        ],
+        "marks": [
+            {
+                "name": "circles",
+                "type": "symbol",
+                "from": { "data": "regions" },
+                "transform": [
+                    {
+                        "type": "force",
+                        "static": true,
+                        "forces": [
+                            { "force": "collide", "radius": { "expr": "1 + sqrt(datum.size) / 2" } },
+                            { "force": "x", "x": "datum.centroid[0]" },
+                            { "force": "y", "y": "datum.centroid[1]" }
+                        ]
+                    }
+                ],
+                "encode": {
+                    "enter": {
+                        "size": { "scale": "size", "field": "value" },
+                        "fill": { "scale": "color", "field": "value" },
+                        "stroke": { "value": "white" },
+                        "strokeWidth": { "value": 1.5 },
+                        "x": { "field": "centroid[0]" },
+                        "y": { "field": "centroid[1]" },
+                        // "tooltip": {"signal": "'Obesity Rate: ' + format(datum.rate, '.1%')"}
+                    }
+                },
+            },
+            {
+                "name": "text",
+                "type": "text",
+                "interactive": false,
+                "from": { "data": "circles" },
+                "encode": {
+                    "enter": {
+                        "align": { "value": "center" },
+                        "baseline": { "value": "middle" },
+                        "fontSize": { "value": 10 },
+                        "fontWeight": { "value": "bold" },
+                        "text": { "value": "X" } // {"field": "datum.stroke"}
+                    },
+                    "update": {
+                        "x": { "field": "x" },
+                        "y": { "field": "y" }
+                    }
+                }
+            }
+        ]
+    };
+    var vegaConfig = {
+        'actions': false,
+    };
+    console.log('vegaSpec', vegaSpec);
+    var runtime = (0,vega__WEBPACK_IMPORTED_MODULE_0__.parse)(vegaSpec);
+    console.log('runtime', runtime);
+    var view = new vega__WEBPACK_IMPORTED_MODULE_0__.View(runtime);
+    view.run();
+    console.log('view', view);
+    // @ts-ignore: accessing private debug object
+    console.log('view._runtime.data.regions', view._runtime.data.regions);
+    // @ts-ignore: accessing private debug object
+    console.log('view._runtime.data.looker', view._runtime.data.looker);
+    console.log('view.description()', view.description());
+    console.log('view.getState()', view.getState());
+    console.log('view.scenegraph()', view.scenegraph());
+    // @ts-ignore: accessing private debug object
+    console.log('view._runtime.data', view._runtime.data);
+    console.log('view.data regions', view.data('regions'));
+    console.log('view.data looker', view.data('looker'));
+    (0,vega_embed__WEBPACK_IMPORTED_MODULE_1__.default)(element, vegaSpec, vegaConfig).catch(console.warn);
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (buildCircleMap);
+
+
+/***/ }),
+
 /***/ "./src/geojson-looker-leaflet.ts":
 /*!***************************************!*\
   !*** ./src/geojson-looker-leaflet.ts ***!
@@ -37043,19 +37196,20 @@ var getConfigOptions = function (model) {
     var dimensions = model.dimensions, measures = model.measures;
     var visOptions = {
         visType: {
-            section: "Map",
+            section: " Map",
             type: "string",
             label: "Vis Type",
             display: "select",
             values: [
                 { "Shapes (Vega Lite)": "vegaLite" },
+                { "Circles (Vega)": "circleMap" },
                 { "Map Tiles (Leaflet)": "leaflet" },
             ],
             default: "vegaLite",
             order: 0
         },
         mapStyle: {
-            section: "Map",
+            section: " Map",
             type: "string",
             label: "Map Style",
             display: "select",
@@ -37071,7 +37225,7 @@ var getConfigOptions = function (model) {
             order: 1
         },
         layerType: {
-            section: "Map",
+            section: " Map",
             type: 'string',
             label: 'Layer Type',
             display: 'select',
@@ -37084,7 +37238,7 @@ var getConfigOptions = function (model) {
             order: 2
         },
         colorScheme: {
-            section: "Region",
+            section: "Shapes",
             type: 'string',
             label: 'Color Scheme',
             display: 'select',
@@ -37098,7 +37252,7 @@ var getConfigOptions = function (model) {
             order: 3
         },
         scale: {
-            section: 'Point',
+            section: 'Circles',
             type: 'number',
             display: 'range',
             label: 'Scale Size By',
@@ -37118,7 +37272,7 @@ var getConfigOptions = function (model) {
         sizeByOptions.push(option);
     });
     visOptions["colorBy"] = {
-        section: "Region",
+        section: "Shapes",
         type: "string",
         label: "Color By",
         display: "select",
@@ -37127,7 +37281,7 @@ var getConfigOptions = function (model) {
         order: 10,
     };
     visOptions["sizeBy"] = {
-        section: "Point",
+        section: "Circles",
         type: "string",
         label: "Size By",
         display: "select",
@@ -37150,7 +37304,7 @@ var getConfigOptions = function (model) {
         projectionOptions.push(option);
     });
     visOptions["regionLayer"] = {
-        section: "Region",
+        section: "Shapes",
         type: "string",
         label: "Region Layer",
         display: "select",
@@ -37159,7 +37313,7 @@ var getConfigOptions = function (model) {
         order: 30,
     };
     visOptions["regionDataKey"] = {
-        section: "Region",
+        section: "Shapes",
         type: "string",
         label: "Data Key",
         display: "select",
@@ -37169,7 +37323,7 @@ var getConfigOptions = function (model) {
         order: 40,
     };
     visOptions["regionMapKey"] = {
-        section: "Region",
+        section: "Shapes",
         type: "string",
         label: "Map Key",
         display: "select",
@@ -37179,7 +37333,7 @@ var getConfigOptions = function (model) {
         order: 50,
     };
     visOptions["pointLayer"] = {
-        section: "Point",
+        section: "Circles",
         type: "string",
         label: "Point Layer",
         display: "select",
@@ -37188,7 +37342,7 @@ var getConfigOptions = function (model) {
         order: 60,
     };
     visOptions["projection"] = {
-        section: "Map",
+        section: " Map",
         type: "string",
         label: "Projection",
         display: "select",
@@ -37271,21 +37425,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vega_embed__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vega-embed */ "./node_modules/vega-embed/build/vega-embed.module.js");
 
-var vegaLiteSpec = {
+var baseSpec = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    layer: []
+    "layer": [],
+    "autosize": { "type": "fit" }
 };
 var buildVegaLiteMap = function (element, config, model) {
+    var vegaLiteSpec = baseSpec;
     vegaLiteSpec.data = {
         "url": model.data[0][config.regionLayer],
         "format": { "property": "features" },
     };
     vegaLiteSpec.projection = {
-        'type': model.data[0][config.projection]
+        "type": model.data[0][config.projection]
     };
     vegaLiteSpec.datasets = {
-        'looker': model.data
+        "looker": model.data
     };
+    vegaLiteSpec.layer = [];
     var regions = {
         "mark": {
             "type": "geoshape",
@@ -37364,7 +37521,6 @@ var buildVegaLiteMap = function (element, config, model) {
     console.log('vegaLiteSpec', vegaLiteSpec);
     vegaLiteSpec.height = element.clientHeight;
     vegaLiteSpec.width = element.clientWidth;
-    vegaLiteSpec.autosize = { "type": "fit" };
     (0,vega_embed__WEBPACK_IMPORTED_MODULE_0__.default)(element, vegaLiteSpec, vegaConfig).catch(console.warn);
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (buildVegaLiteMap);
@@ -97352,6 +97508,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _geojson_looker_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./geojson-looker-model */ "./src/geojson-looker-model.ts");
 /* harmony import */ var _geojson_looker_leaflet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./geojson-looker-leaflet */ "./src/geojson-looker-leaflet.ts");
 /* harmony import */ var _geojson_looker_vegalite__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./geojson-looker-vegalite */ "./src/geojson-looker-vegalite.ts");
+/* harmony import */ var _geojson_looker_circlemap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./geojson-looker-circlemap */ "./src/geojson-looker-circlemap.ts");
+
 
 
 
@@ -97413,6 +97571,9 @@ var vis = {
                 break;
             case 'vegaLite':
                 (0,_geojson_looker_vegalite__WEBPACK_IMPORTED_MODULE_2__.default)(map_element, visConfig, geoVisModel);
+                break;
+            case 'circleMap':
+                (0,_geojson_looker_circlemap__WEBPACK_IMPORTED_MODULE_3__.default)(map_element, visConfig, geoVisModel);
                 break;
         }
     }

@@ -7,6 +7,7 @@ import { GeoVisModel, GeoVisConfig } from './geojson-looker-types'
 import { getDimensions, getMeasures, getConfigOptions, getDataAndRanges } from './geojson-looker-model'
 import buildLeafletMap from './geojson-looker-leaflet'
 import buildVegaLiteMap from './geojson-looker-vegalite'
+import buildCircleMap from './geojson-looker-circlemap'
 
 // Global values provided via the API
 declare var looker: Looker
@@ -85,6 +86,10 @@ const vis: VisualizationDefinition = {
       
       case 'vegaLite':
         buildVegaLiteMap(map_element, visConfig, geoVisModel)
+        break
+
+      case 'circleMap':
+        buildCircleMap(map_element, visConfig, geoVisModel)
         break
     }
     

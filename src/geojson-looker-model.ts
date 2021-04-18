@@ -76,19 +76,20 @@ const getConfigOptions = function(model: GeoVisModel) {
 
   let visOptions: VisOptions = {
     visType: {
-      section: "Map",
+      section: " Map",
       type: "string",
       label: "Vis Type",
       display: "select",
       values: [
         {"Shapes (Vega Lite)": "vegaLite"},
+        {"Circles (Vega)": "circleMap"},
         {"Map Tiles (Leaflet)": "leaflet"},
       ],
       default: "vegaLite",
       order: 0
     },
     mapStyle: {
-      section: "Map",
+      section: " Map",
       type: "string",
       label: "Map Style",
       display: "select",
@@ -104,7 +105,7 @@ const getConfigOptions = function(model: GeoVisModel) {
       order: 1
     },
     layerType: {
-      section: "Map",
+      section: " Map",
       type: 'string',
       label: 'Layer Type',
       display: 'select',
@@ -117,7 +118,7 @@ const getConfigOptions = function(model: GeoVisModel) {
       order: 2
     },
     colorScheme: {
-      section: "Region",
+      section: "Shapes",
       type: 'string',
       label: 'Color Scheme',
       display: 'select',
@@ -131,7 +132,7 @@ const getConfigOptions = function(model: GeoVisModel) {
       order: 3
     },
     scale: {
-      section: 'Point',
+      section: 'Circles',
       type: 'number',
       display: 'range',
       label: 'Scale Size By',
@@ -153,7 +154,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   })
 
   visOptions["colorBy"] = {
-    section: "Region",
+    section: "Shapes",
     type: "string",
     label: "Color By",
     display: "select",
@@ -163,7 +164,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   } 
 
   visOptions["sizeBy"] = {
-      section: "Point",
+      section: "Circles",
       type: "string",
       label: "Size By",
       display: "select",
@@ -188,7 +189,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   })
 
   visOptions["regionLayer"] = {
-    section: "Region",
+    section: "Shapes",
     type: "string",
     label: "Region Layer",
     display: "select",
@@ -198,7 +199,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   } 
 
   visOptions["regionDataKey"] = {
-    section: "Region",
+    section: "Shapes",
     type: "string",
     label: "Data Key",
     display: "select",
@@ -209,7 +210,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   } 
 
   visOptions["regionMapKey"] = {
-    section: "Region",
+    section: "Shapes",
     type: "string",
     label: "Map Key",
     display: "select",
@@ -220,7 +221,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   } 
   
   visOptions["pointLayer"] = {
-      section: "Point",
+      section: "Circles",
       type: "string",
       label: "Point Layer",
       display: "select",
@@ -230,7 +231,7 @@ const getConfigOptions = function(model: GeoVisModel) {
   }
 
   visOptions["projection"] = {
-    section: "Map",
+    section: " Map",
     type: "string",
     label: "Projection",
     display: "select",
