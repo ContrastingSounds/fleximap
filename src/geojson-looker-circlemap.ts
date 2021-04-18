@@ -60,7 +60,7 @@ const buildCircleMap = function(element, config, model) {
         "name": "size",
         "domain": {"data": "regions", "field": "value"},
         "zero": false,
-        "range": [0, 1000]
+        "range": [1000, 5000]
       },
       {
         "name": "color",
@@ -112,7 +112,7 @@ const buildCircleMap = function(element, config, model) {
             "baseline": {"value": "middle"},
             "fontSize": {"value": 10},
             "fontWeight": {"value": "bold"},
-            "text": {"value": "X"} // {"field": "datum.stroke"}
+            "text": {"value": "O"} // {"field": "datum.stroke"}
           },
           "update": {
             "x": {"field": "x"},
