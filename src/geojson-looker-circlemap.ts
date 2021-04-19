@@ -97,7 +97,7 @@ const buildCircleMap = function(element, config, model) {
             "strokeWidth": {"value": 1.5},
             "x": {"field": "centroid[0]"},
             "y": {"field": "centroid[1]"},
-            // "tooltip": {"signal": "'Obesity Rate: ' + format(datum.rate, '.1%')"}
+            "tooltip": {"signal": "{'Name': datum.properties.name, 'Region': datum.properties.region, 'Value': datum.value}"},
           }
         },
       },
@@ -112,7 +112,7 @@ const buildCircleMap = function(element, config, model) {
             "baseline": {"value": "middle"},
             "fontSize": {"value": 10},
             "fontWeight": {"value": "bold"},
-            "text": {"value": "O"} // {"field": "datum.stroke"}
+            "text": {"field": "datum.properties.postal"}, 
           },
           "update": {
             "x": {"field": "x"},
