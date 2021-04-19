@@ -26,7 +26,7 @@ const buildCircleMap = function(element, config, model) {
           },
           {
             "type": "formula",
-            "expr": "800",
+            "expr": "400 + random() * 3000",
             "as": "value"
           },
         ],
@@ -60,7 +60,7 @@ const buildCircleMap = function(element, config, model) {
         "name": "size",
         "domain": {"data": "regions", "field": "value"},
         "zero": false,
-        "range": [1000, 5000]
+        "range": [1000, 4000]
       },
       {
         "name": "color",
