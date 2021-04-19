@@ -6,9 +6,9 @@ import 'leaflet/dist/leaflet.css'
 
 import { interpolateViridis } from 'd3-scale-chromatic'
 
-import { GeoVisModel, GeoVisConfig, GeoJsonLayer } from './geojson-looker-types'
+import { GeoVisModel, GeoVisConfig, GeoJsonLayer } from './fleximap-types'
 
-import './geojson-looker.css'
+import './fleximap.css'
 
 const map_options = {
   'standard': {

@@ -3,11 +3,11 @@ import {
   VisualizationDefinition,
 } from './types'
 
-import { GeoVisModel, GeoVisConfig } from './geojson-looker-types'
-import { getDimensions, getMeasures, getConfigOptions, getDataAndRanges } from './geojson-looker-model'
-import buildLeafletMap from './geojson-looker-leaflet'
-import buildVegaLiteMap from './geojson-looker-vegalite'
-import buildCircleMap from './geojson-looker-circlemap'
+import { GeoVisModel, GeoVisConfig } from './fleximap-types'
+import { getDimensions, getMeasures, getConfigOptions, getDataAndRanges } from './fleximap-model'
+import buildLeafletMap from './fleximap-leaflet'
+import buildVegaLiteMap from './fleximap-vegalite'
+import buildCircleMap from './fleximap-circlemap'
 
 // Global values provided via the API
 declare var looker: Looker

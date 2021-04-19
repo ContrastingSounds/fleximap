@@ -6,7 +6,7 @@
  */
 
 import { VisConfig, VisConfigValue, VisData, VisOptions, VisQueryResponse } from './types'
-import { GeoVisModel } from './geojson-looker-types'
+import { GeoVisModel } from './fleximap-types'
 
 /**
  * Simple function to remove periods from strings

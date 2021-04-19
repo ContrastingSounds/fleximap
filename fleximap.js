@@ -320,10 +320,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, "/* required styles */\r\n\r\n.leaflet-
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./src/geojson-looker.css":
-/*!**********************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./src/geojson-looker.css ***!
-  \**********************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/fleximap.css":
+/*!****************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/fleximap.css ***!
+  \****************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -35716,10 +35716,10 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 
 /***/ }),
 
-/***/ "./src/geojson-looker.css":
-/*!********************************!*\
-  !*** ./src/geojson-looker.css ***!
-  \********************************/
+/***/ "./src/fleximap.css":
+/*!**************************!*\
+  !*** ./src/fleximap.css ***!
+  \**************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -35729,7 +35729,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_geojson_looker_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../node_modules/css-loader/dist/cjs.js!./geojson-looker.css */ "./node_modules/css-loader/dist/cjs.js!./src/geojson-looker.css");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_fleximap_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../node_modules/css-loader/dist/cjs.js!./fleximap.css */ "./node_modules/css-loader/dist/cjs.js!./src/fleximap.css");
 
             
 
@@ -35738,11 +35738,11 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_geojson_looker_css__WEBPACK_IMPORTED_MODULE_1__.default, options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_fleximap_css__WEBPACK_IMPORTED_MODULE_1__.default, options);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_geojson_looker_css__WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_fleximap_css__WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
 
 /***/ }),
 
@@ -36755,10 +36755,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/geojson-looker-circlemap.ts":
-/*!*****************************************!*\
-  !*** ./src/geojson-looker-circlemap.ts ***!
-  \*****************************************/
+/***/ "./src/fleximap-circlemap.ts":
+/*!***********************************!*\
+  !*** ./src/fleximap-circlemap.ts ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -36908,10 +36908,10 @@ var buildCircleMap = function (element, config, model) {
 
 /***/ }),
 
-/***/ "./src/geojson-looker-leaflet.ts":
-/*!***************************************!*\
-  !*** ./src/geojson-looker-leaflet.ts ***!
-  \***************************************/
+/***/ "./src/fleximap-leaflet.ts":
+/*!*********************************!*\
+  !*** ./src/fleximap-leaflet.ts ***!
+  \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -36923,7 +36923,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var leaflet__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(leaflet__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! leaflet/dist/leaflet.css */ "./node_modules/leaflet/dist/leaflet.css");
 /* harmony import */ var d3_scale_chromatic__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! d3-scale-chromatic */ "./node_modules/d3-scale-chromatic/src/sequential-multi/viridis.js");
-/* harmony import */ var _geojson_looker_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./geojson-looker.css */ "./src/geojson-looker.css");
+/* harmony import */ var _fleximap_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fleximap.css */ "./src/fleximap.css");
 // https://storage.googleapis.com/jeff-308116-media/countries.geojson
 // https://storage.googleapis.com/jeff-308116-media/us-states.geojson
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -37105,10 +37105,10 @@ var buildLeafletMap = function (element, config, model) {
 
 /***/ }),
 
-/***/ "./src/geojson-looker-model.ts":
-/*!*************************************!*\
-  !*** ./src/geojson-looker-model.ts ***!
-  \*************************************/
+/***/ "./src/fleximap-model.ts":
+/*!*******************************!*\
+  !*** ./src/fleximap-model.ts ***!
+  \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -37412,10 +37412,10 @@ var getDataAndRanges = function (data, visConfig, visModel) {
 
 /***/ }),
 
-/***/ "./src/geojson-looker-vegalite.ts":
-/*!****************************************!*\
-  !*** ./src/geojson-looker-vegalite.ts ***!
-  \****************************************/
+/***/ "./src/fleximap-vegalite.ts":
+/*!**********************************!*\
+  !*** ./src/fleximap-vegalite.ts ***!
+  \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -97501,14 +97501,14 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!*******************************!*\
-  !*** ./src/geojson-looker.ts ***!
-  \*******************************/
+/*!*************************!*\
+  !*** ./src/fleximap.ts ***!
+  \*************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _geojson_looker_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./geojson-looker-model */ "./src/geojson-looker-model.ts");
-/* harmony import */ var _geojson_looker_leaflet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./geojson-looker-leaflet */ "./src/geojson-looker-leaflet.ts");
-/* harmony import */ var _geojson_looker_vegalite__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./geojson-looker-vegalite */ "./src/geojson-looker-vegalite.ts");
-/* harmony import */ var _geojson_looker_circlemap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./geojson-looker-circlemap */ "./src/geojson-looker-circlemap.ts");
+/* harmony import */ var _fleximap_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fleximap-model */ "./src/fleximap-model.ts");
+/* harmony import */ var _fleximap_leaflet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fleximap-leaflet */ "./src/fleximap-leaflet.ts");
+/* harmony import */ var _fleximap_vegalite__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fleximap-vegalite */ "./src/fleximap-vegalite.ts");
+/* harmony import */ var _fleximap_circlemap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fleximap-circlemap */ "./src/fleximap-circlemap.ts");
 
 
 
@@ -97535,9 +97535,9 @@ var vis = {
             data: [],
             ranges: {}
         };
-        (0,_geojson_looker_model__WEBPACK_IMPORTED_MODULE_0__.getDimensions)(queryResponse, geoVisModel);
-        (0,_geojson_looker_model__WEBPACK_IMPORTED_MODULE_0__.getMeasures)(queryResponse, geoVisModel);
-        (0,_geojson_looker_model__WEBPACK_IMPORTED_MODULE_0__.getConfigOptions)(geoVisModel);
+        (0,_fleximap_model__WEBPACK_IMPORTED_MODULE_0__.getDimensions)(queryResponse, geoVisModel);
+        (0,_fleximap_model__WEBPACK_IMPORTED_MODULE_0__.getMeasures)(queryResponse, geoVisModel);
+        (0,_fleximap_model__WEBPACK_IMPORTED_MODULE_0__.getConfigOptions)(geoVisModel);
         // CONFIG
         var visConfig = {
             visType: config.visType,
@@ -97554,8 +97554,8 @@ var vis = {
             sizeBy: config.sizeBy,
             scale: config.scale
         };
-        this.trigger('registerOptions', (0,_geojson_looker_model__WEBPACK_IMPORTED_MODULE_0__.getConfigOptions)(geoVisModel));
-        (0,_geojson_looker_model__WEBPACK_IMPORTED_MODULE_0__.getDataAndRanges)(data, visConfig, geoVisModel);
+        this.trigger('registerOptions', (0,_fleximap_model__WEBPACK_IMPORTED_MODULE_0__.getConfigOptions)(geoVisModel));
+        (0,_fleximap_model__WEBPACK_IMPORTED_MODULE_0__.getDataAndRanges)(data, visConfig, geoVisModel);
         console.log('geoVisModel:', geoVisModel);
         // MAP
         var map_element = document.getElementById('geojsonMap');
@@ -97567,13 +97567,13 @@ var vis = {
         map_element.setAttribute("style", "height: 100%");
         switch (config.visType) {
             case 'leaflet':
-                (0,_geojson_looker_leaflet__WEBPACK_IMPORTED_MODULE_1__.default)(map_element, visConfig, geoVisModel);
+                (0,_fleximap_leaflet__WEBPACK_IMPORTED_MODULE_1__.default)(map_element, visConfig, geoVisModel);
                 break;
             case 'vegaLite':
-                (0,_geojson_looker_vegalite__WEBPACK_IMPORTED_MODULE_2__.default)(map_element, visConfig, geoVisModel);
+                (0,_fleximap_vegalite__WEBPACK_IMPORTED_MODULE_2__.default)(map_element, visConfig, geoVisModel);
                 break;
             case 'circleMap':
-                (0,_geojson_looker_circlemap__WEBPACK_IMPORTED_MODULE_3__.default)(map_element, visConfig, geoVisModel);
+                (0,_fleximap_circlemap__WEBPACK_IMPORTED_MODULE_3__.default)(map_element, visConfig, geoVisModel);
                 break;
         }
     }
@@ -97584,4 +97584,4 @@ looker.plugins.visualizations.add(vis);
 
 /******/ })()
 ;
-//# sourceMappingURL=geojson-looker.js.map
+//# sourceMappingURL=fleximap.js.map

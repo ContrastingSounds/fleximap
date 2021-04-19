@@ -3,9 +3,9 @@ const path = require('path');
 module.exports = {
   mode: 'development',
   devtool: 'source-map',
-  entry: './src/geojson-looker.ts',
+  entry: './src/fleximap.ts',
   output: {
-    filename: 'geojson-looker.js',
+    filename: 'fleximap.js',
     path: path.resolve(__dirname),
   },
   resolve: {

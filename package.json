@@ -1,9 +1,9 @@
 {
-  "name": "geojson-looker",
+  "name": "fleximap",
   "version": "0.1.0",
-  "description": "GeoJSON data vis for Looker",
-  "main": "geojson-looker.ts",
-  "repository": "https://github.com/ContrastingSounds/geojson-looker",
+  "description": "Data-driven maps for Looker with flexible display options",
+  "main": "fleximap.ts",
+  "repository": "https://github.com/ContrastingSounds/fleximap",
   "author": "Jon Walls",
   "license": "MIT",
   "devDependencies": {

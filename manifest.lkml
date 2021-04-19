@@ -1,7 +1,7 @@
-project_name: "geojson-looker"
+project_name: "fleximap"
 
 visualization: {
-  id: "geojson-looker"
-  file: "geojson-looker.js"
-  label: "GeoJSON"
+  id: "fleximap"
+  file: "fleximap.js"
+  label: "Fleximap"
 }
